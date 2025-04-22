@@ -7,7 +7,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Provider } from 'react-redux';
 import store from './redux/store';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-
+// src/index.js or src/App.js
+import 'leaflet/dist/leaflet.css';
+import './utils/leafletSetup'; // Import the Leaflet setup
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

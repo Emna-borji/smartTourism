@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Container, Row, Col, Form, Button, Alert } from 'react-bootstrap';
 import Sidebar from './Sidebar';
-import { changePassword } from '../../redux/actions/userActions';
+import { changePassword } from '../../redux/actions/authActions'; // Updated import
 import './changePasswordStyle.css';
 
 const ChangePassword = () => {
   const dispatch = useDispatch();
-  const { loading, error } = useSelector((state) => state.user);
+  const { loading, error } = useSelector((state) => state.auth); // Updated to use state.auth
 
   // Local state for form fields
   const [formData, setFormData] = useState({

@@ -7,7 +7,7 @@ import FormInput from './FormInput';
 import AuthErrorMessage from './AuthErrorMessage';
 import AuthButton from './AuthButton';
 
-import { registerUser } from '../../redux/actions/authActions';
+import { register } from '../../redux/actions/authActions';
 import { fetchDestinations } from '../../redux/actions/destinationActions';
 
 const RegisterPage = () => {
@@ -43,7 +43,7 @@ const RegisterPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(registerUser(formData));
+    dispatch(register(formData));
   };
 
   return (

@@ -5,7 +5,7 @@ import AuthForm from './AuthForm';
 import FormInput from './FormInput';
 import AuthButton from './AuthButton';
 import AuthErrorMessage from './AuthErrorMessage';
-import { loginUser } from '../../redux/actions/authActions';
+import { login } from '../../redux/actions/authActions';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -15,7 +15,7 @@ const LoginPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(loginUser({ email, password }));
+    dispatch(login({ email, password }));
   };
 
   return (

@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import Sidebar from './Sidebar';
-import { fetchUserProfile, updateUserProfile } from '../../redux/actions/userActions';
+import { fetchUserProfile, updateUserProfile } from '../../redux/actions/authActions'; // Updated import
 import { fetchDestinations } from '../../redux/actions/destinationActions';
 import './accountSettingsStyle.css';
 
 const AccountSettings = () => {
   const dispatch = useDispatch();
-  const { user, loading: userLoading, error: userError } = useSelector((state) => state.user);
+  const { userInfo, loading: userLoading, error: userError } = useSelector((state) => state.auth);
   const { destinations, loading: destinationsLoading, error: destinationsError } = useSelector((state) => state.destinations);
 
   // Local state for form fields
@@ -22,22 +22,24 @@ const AccountSettings = () => {
 
   // Fetch user profile and destinations
   useEffect(() => {
-    dispatch(fetchUserProfile());
+    if (!userInfo) {
+      dispatch(fetchUserProfile()); // Fetch user profile if not already in state
+    }
     dispatch(fetchDestinations());
-  }, [dispatch]);
+  }, [dispatch, userInfo]);
 
   // Populate form data when user profile is fetched
   useEffect(() => {
-    if (user) {
+    if (userInfo) {
       setFormData({
-        firstname: user.firstname || '',
-        lastname: user.lastname || '',
-        phonenumber: user.phonenumber || '',
-        location_id: user.location ? user.location.id : '',
-        profilepic: user.profilepic || '',
+        firstname: userInfo.firstname || '',
+        lastname: userInfo.lastname || '',
+        phonenumber: userInfo.phonenumber || '',
+        location_id: userInfo.location ? userInfo.location.id : '',
+        profilepic: userInfo.profilepic || '',
       });
     }
-  }, [user]);
+  }, [userInfo]);
 
   // Handle form input changes
   const handleChange = (e) => {
@@ -46,9 +48,16 @@ const AccountSettings = () => {
   };
 
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(updateUserProfile(formData));
+    try {
+      await dispatch(updateUserProfile(formData));
+      // Optionally show a success message
+      alert('Profile updated successfully!');
+    } catch (error) {
+      // Error is already handled in the reducer, but you can add additional UI feedback if needed
+      console.error('Failed to update profile:', error);
+    }
   };
 
   if (userLoading || destinationsLoading) {
@@ -63,9 +72,12 @@ const AccountSettings = () => {
     return <div>Erreur lors du chargement des destinations : {destinationsError}</div>;
   }
 
+  if (!userInfo) {
+    return <div>Utilisateur non connecté. Veuillez vous connecter.</div>;
+  }
+
   return (
     <Container fluid className="account-settings-container">
-        {console.log("dddddddddddddddd")}
       <Row>
         <Col md={3}>
           <Sidebar />
@@ -132,7 +144,7 @@ const AccountSettings = () => {
                 />
               </Form.Group>
 
-              <Button variant="primary" type="submit">
+              <Button variant="primary" type="submit" disabled={userLoading}>
                 Enregistrer les modifications
               </Button>
             </Form>

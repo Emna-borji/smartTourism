@@ -38,23 +38,28 @@ const RestaurantsPage = () => {
   const debouncedDestination = useDebounce(destination, 500);
 
   useEffect(() => {
-    const forks = selectedClasses.map((forkClass) => {
-      if (forkClass === 'oneFork') return 1;
-      if (forkClass === 'twoForks') return 2;
-      if (forkClass === 'threeForks') return 3;
-      return null;
-    }).filter((fork) => fork !== null).join(',');
+    const forks = selectedClasses
+      .map((forkClass) => {
+        if (forkClass === 'oneFork') return 1;
+        if (forkClass === 'twoForks') return 2;
+        if (forkClass === 'threeForks') return 3;
+        return null;
+      })
+      .filter((fork) => fork !== null)
+      .join(',');
 
-    dispatch(fetchRestaurants({
-      searchQuery: debouncedSearchQuery, // Will be empty string if search input is cleared
-      sortOption,
-      destination: debouncedDestination === 'Choisissez votre destination' ? '' : debouncedDestination,
-      forks: forks || undefined,
-    }));
+    dispatch(
+      fetchRestaurants({
+        searchQuery: debouncedSearchQuery,
+        sortOption,
+        destination: debouncedDestination === 'Choisissez votre destination' ? '' : debouncedDestination,
+        forks: forks || undefined,
+      })
+    );
   }, [dispatch, debouncedSearchQuery, sortOption, debouncedDestination, selectedClasses]);
 
   const handleSearch = (query) => {
-    setSearchQuery(query); // Update search query as the user types
+    setSearchQuery(query);
   };
 
   const handleSortChange = (option) => {
@@ -89,6 +94,7 @@ const RestaurantsPage = () => {
         error={error}
         itemType="Restaurants"
         itemDetailsRoute="restaurant"
+        entityType="restaurant" // Pass entityType
       />
     </Container>
   );

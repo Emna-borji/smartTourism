@@ -1,3 +1,4 @@
+// src/pages/Shared/SortDropDown.jsx
 import React, { useState } from 'react';
 import { Dropdown, Form } from 'react-bootstrap';
 import { FaChevronDown } from 'react-icons/fa';
@@ -16,7 +17,7 @@ const SortDropDown = ({ onSortChange }) => {
 
   return (
     <div className="sort-container">
-      <Form.Label className="sort-label">Trier par</Form.Label>
+      <Form.Label className="sort-label">Trier par prix</Form.Label>
       <Dropdown
         onToggle={(isOpen) => setIsFocused(isOpen)}
         className={`custom-sort-dropdown ${isFocused ? 'focused' : ''}`}
